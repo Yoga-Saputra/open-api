@@ -1,0 +1,447 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "E-Commerce microservice",
+    "version": "1",
+    "description": "OpenAPI for E-Commerce microservice",
+    "termsOfService": "https://www.yoga.com",
+    "contact": {
+      "name": "Nur awwabin yoga saputra",
+      "email": "yogasaputray@gmail.com",
+      "url": "https://www.yoga.com"
+    },
+    "license": {
+      "name": "APACHE 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "servers": [
+    {
+      "description": "E-Commerce microservice Server",
+      "url": "https://{environment}.yoga.com/api/v1",
+      "variables": {
+        "environment": {
+          "description": "Server Environment",
+          "default": "dev",
+          "enum": [
+            "dev",
+            "qa",
+            "prod"
+          ]
+        }
+      }
+    }
+  ],
+  "externalDocs": {
+    "description": "Backend Developer",
+    "url": "https://www.yoga.com"
+  },
+  "paths": {
+    "/product": {
+      "get": {
+        "security": [
+          {
+            "productAuth": []
+          }
+        ],
+        "tags": [
+          "product"
+        ],
+        "summary": "Get all product",
+        "description": "Get all active product by default",
+        "parameters": [
+          {
+            "name": "include_done",
+            "in": "query",
+            "required": false,
+            "description": "Is include done product",
+            "schema": {
+              "type": "boolean",
+              "nullable": true,
+              "default": false
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "description": "Filter product by name",
+            "schema": {
+              "type": "string",
+              "nullable": true,
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "examples": {
+              "phone": {
+                "description": "Example name Phone",
+                "value": "Phone"
+              },
+              "laptop": {
+                "description": "Example name Laptop",
+                "value": "Laptop"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get all product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Arrayproduct"
+                },
+                "examples": {
+                  "success": {
+                    "description": "Example success get all product",
+                    "value": [
+                      {
+                        "id": "1",
+                        "name": "Phone",
+                        "priority": 3,
+                        "tags": [
+                          "Iphone",
+                          "Samsung"
+                        ]
+                      },
+                      {
+                        "id": "2",
+                        "name": "Laptop",
+                        "priority": 5,
+                        "tags": [
+                          "Mac",
+                          "Hp"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "productAuth": []
+          }
+        ],
+        "tags": [
+          "product"
+        ],
+        "summary": "Create new product",
+        "description": "Create new product to database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateproduct"
+              },
+              "examples": {
+                "phone": {
+                  "description": "Example create product phone",
+                  "value": {
+                    "name": "phone",
+                    "priority": 3,
+                    "tags": [
+                      "phone",
+                      "product"
+                    ]
+                  }
+                },
+                "laptop": {
+                  "description": "Example create product laptop",
+                  "value": {
+                    "name": "laptop",
+                    "priority": 5,
+                    "tags": [
+                      "laptop",
+                      "product"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success create product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                },
+                "examples": {
+                  "phone": {
+                    "description": "Success create phone product",
+                    "value": {
+                      "id": "1",
+                      "name": "phone",
+                      "priority": 3,
+                      "tags": [
+                        "phone",
+                        "Product"
+                      ]
+                    }
+                  },
+                  "laptop": {
+                    "description": "Success create laptop product",
+                    "value": {
+                      "id": "2",
+                      "name": "laptop",
+                      "priority": 5,
+                      "tags": [
+                        "laptop",
+                        "Product"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/{productId}": {
+      "put": {
+        "security": [
+          {
+            "productAuth": []
+          }
+        ],
+        "tags": [
+          "product"
+        ],
+        "summary": "Update existing product",
+        "description": "Update existing product in database",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/productId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateproduct"
+              },
+              "examples": {
+                "phone": {
+                  "description": "Example create product phone",
+                  "value": {
+                    "name": "phone",
+                    "priority": 3,
+                    "tags": [
+                      "phone",
+                      "product"
+                    ]
+                  }
+                },
+                "laptop": {
+                  "description": "Example create product laptop",
+                  "value": {
+                    "name": "laptop",
+                    "priority": 5,
+                    "tags": [
+                      "laptop",
+                      "product"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success update product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                },
+                "examples": {
+                  "phone": {
+                    "description": "Success create phone product",
+                    "value": {
+                      "id": "1",
+                      "name": "phone",
+                      "priority": 3,
+                      "tags": [
+                        "phone",
+                        "product"
+                      ]
+                    }
+                  },
+                  "laptop": {
+                    "description": "Success create laptop product",
+                    "value": {
+                      "id": "2",
+                      "name": "laptop",
+                      "priority": 5,
+                      "tags": [
+                        "laptop",
+                        "product"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "productAuth": []
+          }
+        ],
+        "tags": [
+          "product"
+        ],
+        "summary": "Delete existing product",
+        "description": "Delete existing product in database",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/productId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "description": "Success delete product",
+                    "value": {
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed delete not found product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "examples": {
+                  "failed": {
+                    "description": "Failed delete product",
+                    "value": {
+                      "success": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "productAuth": {
+        "description": "Authentication for product RESTful API",
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      }
+    },
+    "parameters": {
+      "productId": {
+        "name": "productId",
+        "in": "path",
+        "required": true,
+        "description": "product id for updated",
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "examples": {
+          "phone": {
+            "description": "Sample product id for phone",
+            "value": "1"
+          },
+          "laptop": {
+            "description": "Sample product id for laptop",
+            "value": "2"
+          }
+        }
+      }
+    },
+    "schemas": {
+      "product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "number",
+            "format": "int32"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateOrUpdateproduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "number",
+            "format": "int32"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Arrayproduct": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/product"
+        }
+      }
+    }
+  }
+}
